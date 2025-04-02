@@ -361,3 +361,6 @@ MigrationBackup/
 
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
+
+#Evitar que se pase el contenido de la carpeta Migrations
+Migrations/
