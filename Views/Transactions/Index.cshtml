@@ -1,0 +1,135 @@
+﻿@model IEnumerable<ProductManager.Models.Transaction>
+
+@{
+    ViewData["Title"] = "Historial de Transacciones";
+}
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h1 class="mb-0"><i class="fas fa-exchange-alt me-2"></i>Historial de Transacciones</h1>
+    <a asp-action="Create" class="btn btn-success">
+        <i class="fas fa-plus-circle me-1"></i> Nueva Transacción
+    </a>
+</div>
+
+<div class="card shadow-sm">
+    <div class="card-header bg-light">
+        <div class="d-flex justify-content-between align-items-center">
+            <h4 class="mb-0">Registro de Movimientos</h4>
+            <div class="input-group" style="width: 300px;">
+                <input type="text" class="form-control" placeholder="Buscar transacción..." id="searchInput">
+                <button class="btn btn-outline-secondary" type="button">
+                    <i class="fas fa-search"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-hover">
+                <thead class="table-light">
+                    <tr>
+                        <th>Producto</th>
+                        <th class="text-center">Cantidad</th>
+                        <th class="text-center">Tipo</th>
+                        <th>Comentarios</th>
+                        <th class="text-center">Fecha</th>
+                        <th class="text-center" style="width: 120px;">Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>
+                                @{
+                                    var productDesc = ViewBag.Products[item.idProduct] as string;
+                                }
+                                @productDesc
+                            </td>
+                            <td class="text-center">
+                                <span class="badge @(item.pieces > 0 ? "bg-success" : "bg-danger")">
+                                    @Html.DisplayFor(modelItem => item.pieces)
+                                </span>
+                            </td>
+                            <td class="text-center">
+                                <span class="badge @(item.typeTransaction == TypeTransaction.Entrada ? "bg-info" : "bg-warning text-dark")">
+                                    @Html.DisplayFor(modelItem => item.typeTransaction)
+                                </span>
+                            </td>
+                            <td>
+                                <span class="text-truncate" style="max-width: 200px; display: inline-block;">
+                                    @Html.DisplayFor(modelItem => item.comments)
+                                </span>
+                            </td>
+                            <td class="text-center">
+                                @Html.DisplayFor(modelItem => item.createdDate)
+                            </td>
+                            <td class="text-center">
+                                <div class="btn-group" role="group">
+                                    <a asp-action="Details" asp-route-id="@item.idTransaction"
+                                       class="btn btn-sm btn-outline-primary"
+                                       data-bs-toggle="tooltip"
+                                       data-bs-placement="top"
+                                       title="Ver detalles">
+                                        <i class="fas fa-eye"></i>
+                                    </a>
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="card-footer bg-light">
+        <div class="d-flex justify-content-between align-items-center">
+            <div class="text-muted">
+                Mostrando @Model.Count() transacciones
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        // Inicializar tooltips
+        document.addEventListener('DOMContentLoaded', function () {
+            var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
+            var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+                return new bootstrap.Tooltip(tooltipTriggerEl)
+            })
+
+            // Función de búsqueda simple
+            document.getElementById('searchInput').addEventListener('keyup', function () {
+                const searchValue = this.value.toLowerCase()
+                const rows = document.querySelectorAll('tbody tr')
+
+                rows.forEach(row => {
+                    const text = row.textContent.toLowerCase()
+                    row.style.display = text.includes(searchValue) ? '' : 'none'
+                })
+            })
+        })
+    </script>
+}
+
+<style>
+    .table th {
+        white-space: nowrap;
+    }
+
+    .badge {
+        font-size: 0.85em;
+        min-width: 70px;
+    }
+
+    .btn-group .btn {
+        padding: 0.25rem 0.5rem;
+    }
+
+    .text-truncate {
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+</style>

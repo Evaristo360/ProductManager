@@ -1,0 +1,105 @@
+﻿@model ProductManager.Models.Transaction
+
+@{
+    ViewData["Title"] = "Nueva Transacción";
+}
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h1 class="mb-0"><i class="fas fa-exchange-alt me-2"></i>Nueva Transacción</h1>
+    <a asp-action="Index" class="btn btn-outline-secondary">
+        <i class="fas fa-arrow-left me-1"></i> Volver al Historial
+    </a>
+</div>
+
+<div class="card shadow-sm">
+    <div class="card-header bg-light">
+        <h4 class="mb-0">Información del Movimiento</h4>
+    </div>
+    <div class="card-body">
+        <form asp-action="Create" class="needs-validation" novalidate>
+            <div asp-validation-summary="ModelOnly" class="alert alert-danger"></div>
+
+            <div class="row g-3">
+                <div class="col-md-6">
+                    <div class="form-floating mb-3">
+                        <select asp-for="idProduct" class="form-select" required>
+                            <option value="">Seleccione producto</option>
+                            @foreach (var product in ViewBag.Products)
+                            {
+                                <option value="@product.idProduct">@product.description</option>
+                            }
+                        </select>
+                        <label asp-for="idProduct">Producto</label>
+                        <span asp-validation-for="idProduct" class="invalid-feedback"></span>
+                    </div>
+
+                    <div class="form-floating mb-3">
+                        <input asp-for="pieces" class="form-control" placeholder=" " type="number" required />
+                        <label asp-for="pieces">Cantidad</label>
+                        <span asp-validation-for="pieces" class="invalid-feedback"></span>
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="form-floating mb-3">
+                        <select asp-for="typeTransaction" class="form-select" required
+                                asp-items="Html.GetEnumSelectList<TypeTransaction>()">
+                            <option value="">Seleccione tipo</option>
+                        </select>
+                        <label asp-for="typeTransaction">Tipo de Transacción</label>
+                        <span asp-validation-for="typeTransaction" class="invalid-feedback"></span>
+                    </div>
+
+                    <div class="form-floating mb-3">
+                        <input asp-for="createdDate" class="form-control" placeholder=" " type="datetime-local" required />
+                        <label asp-for="createdDate">Fecha y Hora</label>
+                        <span asp-validation-for="createdDate" class="invalid-feedback"></span>
+                    </div>
+                </div>
+
+                <div class="col mt-0">
+                    <div class="form-floating mb-3">
+                        <input asp-for="comments" class="form-control" placeholder=" " />
+                        <label asp-for="comments">Comentarios</label>
+                        <span asp-validation-for="comments" class="invalid-feedback"></span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="d-flex justify-content-end mt-4 gap-3">
+                <a asp-action="Index" class="btn btn-secondary px-4">
+                    <i class="fas fa-times me-1"></i> Cancelar
+                </a>
+                <button type="submit" class="btn btn-success px-4">
+                    <i class="fas fa-save me-1"></i> Registrar Transacción
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+    <script>
+        // Validación del lado del cliente
+        (function () {
+            'use strict'
+
+            var forms = document.querySelectorAll('.needs-validation')
+
+            Array.prototype.slice.call(forms)
+                .forEach(function (form) {
+                    form.addEventListener('submit', function (event) {
+                        if (!form.checkValidity()) {
+                            event.preventDefault()
+                            event.stopPropagation()
+                        }
+
+                        form.classList.add('was-validated')
+                    }, false)
+                })
+        })()
+    </script>
+}

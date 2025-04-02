@@ -1,0 +1,85 @@
+﻿@model ProductManager.Models.Location
+
+@{
+    ViewData["Title"] = "Detalles de Alamacén";
+}
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h1 class="mb-0"><i class="fas fa-warehouse me-2"></i>Detalles de Almacén</h1>
+    <a asp-action="Index" class="btn btn-outline-secondary">
+        <i class="fas fa-arrow-left me-1"></i> Volver al Listado
+    </a>
+</div>
+
+<div class="card shadow-sm">
+    <div class="card-header bg-light">
+        <h4 class="mb-0">Información del Almacén</h4>
+    </div>
+    <div class="card-body">
+        <div class="row g-4">
+            <!-- Columna Izquierda -->
+            <div class="col-md-6">
+                <div class="info-item">
+                    <h5 class="info-label"><i class="fas fa-signature me-2"></i>Nombre</h5>
+                    <p class="info-value">@Html.DisplayFor(model => model.name)</p>
+                </div>
+
+                <div class="info-item">
+                    <h5 class="info-label"><i class="fas fa-align-left me-2"></i>Descripción</h5>
+                    <p class="info-value">@Html.DisplayFor(model => model.description)</p>
+                </div>
+            </div>
+
+            <!-- Columna Derecha -->
+            <div class="col-md-6">
+                <div class="info-item">
+                    <h5 class="info-label"><i class="fas fa-barcode me-2"></i>Código</h5>
+                    <p class="info-value">@Html.DisplayFor(model => model.code)</p>
+                </div>
+
+                <div class="info-item">
+                    <h5 class="info-label"><i class="fas fa-power-off me-2"></i>Estado</h5>
+                    <p class="info-value">
+                        <span class="badge @(Model.status ? "bg-success" : "bg-secondary")">
+                            @(Model.status ? "Activo" : "Inactivo")
+                        </span>
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <div class="d-flex justify-content-end mt-4 gap-3">
+            <a asp-action="Edit" asp-route-id="@Model?.idLocation" class="btn btn-warning px-4">
+                <i class="fas fa-edit me-1"></i> Editar
+            </a>
+            <a asp-action="Index" class="btn btn-outline-secondary px-4">
+                <i class="fas fa-list me-1"></i> Ver Todas
+            </a>
+        </div>
+    </div>
+</div>
+
+<style>
+    .info-item {
+        margin-bottom: 1.5rem;
+        padding-bottom: 1rem;
+        border-bottom: 1px solid #eee;
+    }
+
+    .info-label {
+        font-size: 0.9rem;
+        color: #6c757d;
+        margin-bottom: 0.5rem;
+    }
+
+    .info-value {
+        font-size: 1.1rem;
+        font-weight: 500;
+        margin-bottom: 0;
+    }
+
+    .badge {
+        font-size: 0.9em;
+        padding: 0.35em 0.65em;
+    }
+</style>

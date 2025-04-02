@@ -1,0 +1,76 @@
+﻿@model ProductManager.Models.Transaction
+
+@{
+    ViewData["Title"] = "Eliminar Transacción";
+}
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h1 class="mb-0">Eliminar Transacción</h1>
+    <a asp-action="Index" class="btn btn-secondary btn-sm">
+        <i class="fas fa-arrow-left me-1"></i> Regresar al Historial
+    </a>
+</div>
+
+<div class="card border-danger">
+    <div class="card-header bg-danger text-white">
+        <h4 class="mb-0"><i class="fas fa-exclamation-triangle me-2"></i>Confirmación de Eliminación</h4>
+    </div>
+    <div class="card-body">
+        <div class="alert alert-danger" role="alert">
+            <strong>¡Advertencia!</strong> Está a punto de eliminar permanentemente esta transacción. Esta acción no se puede deshacer.
+        </div>
+
+        <div class="row">
+            <!-- Columna Izquierda -->
+            <div class="col-md-6">
+                <dl class="row">
+                    <dt class="col-sm-4">Producto:</dt>
+                    <dd class="col-sm-8">@Html.DisplayFor(model => model.idProduct)</dd>
+
+                    <dt class="col-sm-4">Cantidad:</dt>
+                    <dd class="col-sm-8">
+                        <span class="badge @(Model.pieces > 0 ? "bg-success" : "bg-danger")">
+                            @Html.DisplayFor(model => model.pieces)
+                        </span>
+                    </dd>
+                </dl>
+            </div>
+
+            <!-- Columna Derecha -->
+            <div class="col-md-6">
+                <dl class="row">
+                    <dt class="col-sm-4">Tipo:</dt>
+                    <dd class="col-sm-8">
+                        <span class="badge @(Model.typeTransaction == TypeTransaction.Entrada ? "bg-info" : "bg-warning text-dark")">
+                            @Html.DisplayFor(model => model.typeTransaction)
+                        </span>
+                    </dd>
+
+                    <dt class="col-sm-4">Fecha:</dt>
+                    <dd class="col-sm-8">@Html.DisplayFor(model => model.createdDate)</dd>
+                </dl>
+            </div>
+        </div>
+
+        <div class="row mt-3">
+            <div class="col-md-12">
+                <dl class="row">
+                    <dt class="col-sm-2">Comentarios:</dt>
+                    <dd class="col-sm-10">@Html.DisplayFor(model => model.comments)</dd>
+                </dl>
+            </div>
+        </div>
+
+        <div class="d-flex justify-content-between mt-4">
+            <a asp-action="Index" class="btn btn-secondary">
+                <i class="fas fa-times me-1"></i> Cancelar
+            </a>
+            <form asp-action="Delete" class="mb-0">
+                <input type="hidden" asp-for="idTransaction" />
+                <button type="submit" class="btn btn-danger">
+                    <i class="fas fa-trash-alt me-1"></i> Confirmar Eliminación
+                </button>
+            </form>
+        </div>
+    </div>
+</div>
